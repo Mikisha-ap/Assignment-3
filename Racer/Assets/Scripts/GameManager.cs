@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -8,14 +7,17 @@ public class GameManager : MonoBehaviour
 	public Camera cam2;       // Assign in Inspector
 	public GameObject player1;
 	public GameObject player2;
+	public GameObject GameMode_pnl;
+	//public Button twoPlayer;
 
-	public bool isTwoPlayer = false;  // toggle this for single / split
+	private bool isTwoPlayer = false;  // toggle this for single / split
 
 	void Start()
 	{
-		SetupGameMode();
+		SetupGameMode();		
 	}
 
+	
 	void SetupGameMode()
 	{
 		if (isTwoPlayer)
@@ -43,5 +45,19 @@ public class GameManager : MonoBehaviour
 			// Full Screen for cam1
 			cam1.rect = new Rect(0, 0, 1, 1);
 		}
+	}
+
+	public void EnableTwoPlayerMode()
+	{
+		isTwoPlayer = true;
+		SetupGameMode();
+		GameMode_pnl.SetActive(false);
+	}
+		
+	public void EnableSinglePlayerMode()
+	{
+		isTwoPlayer = false;
+		SetupGameMode();
+		GameMode_pnl.SetActive(false);
 	}
 }
