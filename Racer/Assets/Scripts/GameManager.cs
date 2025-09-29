@@ -1,14 +1,20 @@
+using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-	public Camera cam1;       // Assign in Inspector
-	public Camera cam2;       // Assign in Inspector
+	// Attach this script to a game object in the scene, this could be an empty game object/a constant stationary game object i.e. track.
+	// This script sets up  the player selection modes.
+
+	public Camera cam1;       
+	public Camera cam2;       
 	public GameObject player1;
 	public GameObject player2;
 	public GameObject GameMode_pnl;
+	public float raceTime = 60f;				// Starting time in seconds
+	public TextMeshProUGUI timerText;
 	//public Button twoPlayer;
+	public int nextCheckpointIndex = 0;
 
 	private bool isTwoPlayer = false;  // toggle this for single / split
 
@@ -17,7 +23,16 @@ public class GameManager : MonoBehaviour
 		SetupGameMode();		
 	}
 
-	
+	private void Update()
+	{
+		// Countdown
+		raceTime -= Time.deltaTime;
+		if (raceTime < 0) raceTime = 0;
+
+		// Update UI
+		if (timerText != null)
+			timerText.text = "Time: " + raceTime.ToString("F1");
+	}
 	void SetupGameMode()
 	{
 		if (isTwoPlayer)
@@ -59,5 +74,21 @@ public class GameManager : MonoBehaviour
 		isTwoPlayer = false;
 		SetupGameMode();
 		GameMode_pnl.SetActive(false);
+	}
+
+	public void AddTime(float amount)
+	{
+		raceTime += amount;
+	}
+
+	public void SubtractTime(float amount)
+	{
+		raceTime -= amount;
+		if (raceTime < 0) raceTime = 0;
+	}
+
+	public void AdvanceCheckpoint()
+	{		
+		nextCheckpointIndex++;
 	}
 }
